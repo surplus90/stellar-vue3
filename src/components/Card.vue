@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>Pick your card</h1>
+    <q-btn color="purple" label="Purple" />
   </div>
 </template>
 
