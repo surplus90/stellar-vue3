@@ -1,33 +1,53 @@
 <template>
-  <div class="hello">
-    <h1>Pick your card</h1>
-    <q-btn color="purple" label="Purple" />
+  <div class="spread-sheet">
+    <h2>Pick your card</h2>
+    <div class="card-base">
+      <div class="my-card" v-for="card in cards" :key=card :style="{ left: card*30 + 'px' }">
+        {{card}}
+      </div>
+    </div>
+    
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
   name: 'Card',
   props: {
     msg: String
+  },
+  setup() {
+    const cards = ref([])
+    cards.value = [...new Array(78).keys()]
+
+    return {
+      cards
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+
+.spread-sheet {
+  width: 100%;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.card-base {
+  position: relative;
+  margin-left: 10px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.my-card {
+  width: 80px;
+  height: 110px;
+  background: #eeeae7;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px 0 rgba(151,150,146,0.4);
+  float: left;
+  position: absolute;
 }
-a {
-  color: #42b983;
-}
+
 </style>
