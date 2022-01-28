@@ -7,9 +7,9 @@ const routes = [
         component: () => import('@/components/HelloWorld')
     },
     {
-        path: '/cards',
+        path: '/cards/:cardsAmount/:selectedAmount',
         name: 'Card',
-        component: () => import('@/components/Card')
+        component: () => import('@/views/Card')
     }
 ]
 
