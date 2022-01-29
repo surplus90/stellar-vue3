@@ -54,6 +54,10 @@ export default {
         return false
       }
 
+      this.$http.get('/hello').then((res) => {
+        console.log(res)
+      })
+
       alert('카드 선택이 완료 됐습니다.\n잠시만 기다려 주세요😎')
     }
   }

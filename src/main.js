@@ -3,9 +3,12 @@ import { router } from './router'
 import App from './App.vue'
 import { Quasar } from 'quasar'
 import quasarUserOptions from './quasar-user-options'
+import axios from 'axios';
 
 const app = createApp(App).use(Quasar, quasarUserOptions)
 
-app.use(router)
+axios.defaults.baseURL = 'http://localhost:9090';
+app.config.globalProperties.$http = axios
 
+app.use(router)
 app.mount('#app')
