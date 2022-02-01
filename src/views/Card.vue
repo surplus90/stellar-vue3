@@ -13,8 +13,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import axios from 'axios'
 
 export default {
   name: 'Card',
@@ -22,17 +23,25 @@ export default {
   },
   setup() {
     const route = useRoute()
-    const cardsAmount = ref(Number(route.params.cardsAmount))
+    const reservationIdx = ref(Number(route.params.idx))
+    const cardsAmount = ref(0)
+    const selectedAmount = ref(0)
     const cards = ref([])
-    cards.value = [...new Array(cardsAmount.value).keys()]
+
+    onMounted(async () => {
+      const detail = await axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`)
+      cardsAmount.value = detail.data.amountCards
+      selectedAmount.value = detail.data.selectedCards
+      cards.value = [...new Array(cardsAmount.value).keys()]
+    });
 
     return {
-      cards
+      cards,
+      selectedAmount
     }
   },
   data () {
     return {
-      selectedAmount: this.$route.params.selectedAmount,
       selectedCards: new Map
     }
   },
@@ -54,11 +63,13 @@ export default {
         return false
       }
 
-      this.$http.get('/hello').then((res) => {
-        console.log(res)
+      const params = {
+        key: 'sooyoon',
+        cards: [...this.selectedCards.values()]
+      }
+      this.$http.post('/api/fortune-telling/pick-cards', params).then(() => {
+        alert('카드 선택이 완료 됐습니다.\n잠시만 기다려 주세요😎')
       })
-
-      alert('카드 선택이 완료 됐습니다.\n잠시만 기다려 주세요😎')
     }
   }
 }

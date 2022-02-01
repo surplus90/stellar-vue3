@@ -7,7 +7,17 @@ const routes = [
         component: () => import('@/components/HelloWorld')
     },
     {
-        path: '/cards/:cardsAmount/:selectedAmount',
+        path: '/reservations',
+        name: 'Reservations',
+        component: () => import('@/views/Reservations')
+    },
+    {
+        path: '/set/cards',
+        name: 'SetCards',
+        component: () => import('@/views/SetCards')
+    },
+    {
+        path: '/cards/:idx',
         name: 'Card',
         component: () => import('@/views/Card')
     }
