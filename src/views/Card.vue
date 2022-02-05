@@ -37,7 +37,8 @@ export default {
 
     return {
       cards,
-      selectedAmount
+      selectedAmount,
+      reservationIdx
     }
   },
   data () {
@@ -64,11 +65,12 @@ export default {
       }
 
       const params = {
-        key: 'sooyoon',
+        reservationIdx: this.reservationIdx,
         cards: [...this.selectedCards.values()]
       }
       this.$http.post('/api/fortune-telling/pick-cards', params).then(() => {
         alert('카드 선택이 완료 됐습니다.\n잠시만 기다려 주세요😎')
+        this.$router.push('/')
       })
     }
   }

@@ -3,8 +3,8 @@ import { createWebHistory, createRouter } from 'vue-router';
 const routes = [
     {
         path: '/',
-        name: 'HelloWorld',
-        component: () => import('@/components/HelloWorld')
+        name: 'Home',
+        component: () => import('@/views/Home')
     },
     {
         path: '/reservations',

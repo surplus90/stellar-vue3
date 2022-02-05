@@ -1,5 +1,8 @@
 <template>
   <div class="q-pa-md">
+
+    <q-btn class="btn" color="purple" label="예약 저장" @click="goSetCard"/>
+
     <q-table
       title="예약"
       :rows="rows"
@@ -34,11 +37,12 @@ export default {
 
     columns.value = [
       { name: 'idx', required: true, label: 'No', align: 'left', field: row => row.idx, sortable: true },
-      { name: 'title', align: 'center', label: '상담명', field: 'title' },
+      { name: 'userName', align: 'center', label: '상담명', field: 'userName' },
       { name: 'amountCards', align: 'center', label: '총 카드 장 수', field: 'amountCards' },
       { name: 'selectedCards', align: 'center', label: '선택해야 할 카드 장 수', field: 'selectedCards' },
       { name: 'userLink', align: 'center', label: 'link', field: 'idx' },
       { name: 'reservationAt', align: 'center', label: '예약날짜', field: 'reservationAt', format: val => moment(val).format('YYYY-MM-DD hh:mm:s') },
+      { name: 'setcardsAt', align: 'center', label: '카드선택', field: 'setcardsAt', format: val => (val) ? moment(val).format('YYYY-MM-DD hh:mm:s') : '' },
       { name: 'createdAt', align: 'center', label: '생성날짜', field: 'createdAt', format: val => moment(val).format('YYYY-MM-DD hh:mm:s') }
     ]
 
@@ -53,17 +57,17 @@ export default {
   },
   methods: {
     copyLink (idx) {
-      const t = document.createElement("textarea");
-      document.body.appendChild(t);
-      t.value = `http://localhost:8080/cards/${idx}`;
-      t.select();
-      document.execCommand('copy');
-      document.body.removeChild(t);
+      navigator.clipboard.writeText(`http://localhost:8080/cards/${idx}`)
+    },
+    goSetCard () {
+      this.$router.push('/set/cards')
     }
   },
 }
 </script>
 
 <style scoped>
-
+.btn {
+  margin-bottom: 15px;
+}
 </style>
