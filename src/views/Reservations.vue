@@ -13,7 +13,7 @@
 
       <template v-slot:body-cell-userLink="props">
         <q-td :props="props">
-          {{ `http://158.247.198.238:8080/cards/${props.value}` }}
+          {{ `${this.location}/cards/${props.value}` }}
           <q-btn flat round color="black" icon="content_copy" size="sm" @click="copyLink(props.value)" />
         </q-td>
       </template>
@@ -32,6 +32,7 @@ export default {
   props: {
   },
   setup () {
+    const location = ref(window.location.origin)
     const columns = ref([])
     const rows = ref([])
 
@@ -51,13 +52,14 @@ export default {
     })
 
     return {
+      location,
       columns,
       rows
     }
   },
   methods: {
     copyLink (idx) {
-      navigator.clipboard.writeText(`http://158.247.198.238:8080/cards/${idx}`)
+      navigator.clipboard.writeText(`${this.location}/cards/${idx}`)
     },
     goSetCard () {
       this.$router.push('/set/cards')
