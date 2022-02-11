@@ -14,7 +14,7 @@
       <template v-slot:body-cell-userLink="props">
         <q-td :props="props">
           {{ `${this.location}/cards/${props.value}` }}
-          <q-btn flat round color="black" icon="content_copy" size="sm" @click="copyLink(props.value)" />
+          <!-- <q-btn flat round color="black" icon="content_copy" size="sm" @click="copyLink(props.value)" /> -->
         </q-td>
       </template>
 
