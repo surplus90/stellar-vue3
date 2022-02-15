@@ -25,14 +25,17 @@
 
     </q-table>
 
-    <q-dialog v-model="alert">
-      <q-card style="width: 700px; max-width: 80vw;">
-        <q-card-section>
+    <q-dialog v-model="alert" full-width>
+      <q-card style="padding-bottom: 20px">
+        <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ detail.userName }}</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
-        <q-card-section class="q-pt-none" v-for="(card, num) in this.detail.cards" :key="num">
+        <q-card-section>
           <q-card
+            v-for="(card, num) in this.detail.cards" :key="num" 
             class="my-card text-white"
             style="background: radial-gradient(circle, #5a3b54 0%, #403a48 100%)"
           >
@@ -42,9 +45,6 @@
           </q-card>
         </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
-        </q-card-actions>
       </q-card>
     </q-dialog>
 
@@ -120,5 +120,6 @@ export default {
   width: 70px;
   height: 100px;
   text-align: center;
+  float: left;
 }
 </style>
