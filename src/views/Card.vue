@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: rgb(34, 53, 53);">
+  <div style="height: 100vh; background-color: rgb(34, 53, 53);">
     <div class="q-ml-sm">
 
       <div v-if="userCards">
@@ -42,6 +42,7 @@ export default {
     const cardsAmount = ref(0)
     const selectedAmount = ref(0)
     const cards = ref([])
+    const selectedCards = ref(new Map)
 
     const shuffleArrayES6 = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -52,37 +53,39 @@ export default {
         return array;
     }
 
+    const selectCard = (card) => {
+      if (selectedCards.value.has(card)) {
+        document.getElementById(card).style.background = '#eeeae7'
+        selectedCards.value.delete(card)
+      } else {
+        if (selectedCards.value.size < selectedAmount.value) {
+          document.getElementById(card).style.background = '#9370DB'
+          selectedCards.value.set(card, card)
+        }
+      }
+    }
+
     onMounted(async () => {
       const detail = await axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`)
-      cardsAmount.value = detail.data.amountCards
-      selectedAmount.value = detail.data.selectedCards
+      cardsAmount.value = detail.data.reservation.amountCards
+      selectedAmount.value = detail.data.reservation.selectedCards
       cards.value = shuffleArrayES6([...new Array(cardsAmount.value).keys()])
     });
 
     return {
       cards,
       selectedAmount,
-      reservationIdx
+      reservationIdx,
+      selectedCards,
+      selectCard
     }
   },
   data () {
     return {
-      selectedCards: new Map,
       userCards: null
     }
   },
   methods: {
-    selectCard (card) {
-      if (this.selectedCards.has(card)) {
-        document.getElementById(card).style.background = '#eeeae7'
-          this.selectedCards.delete(card)
-      } else {
-        if (this.selectedCards.size < this.selectedAmount) {
-          document.getElementById(card).style.background = '#9370DB'
-          this.selectedCards.set(card, card)
-        }
-      }
-    },
     submit () {
       if (this.selectedCards.size < this.selectedAmount) {
         alert(`총 ${this.selectedAmount}장의 카드를 선택해 주세요`)
