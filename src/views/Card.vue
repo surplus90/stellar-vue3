@@ -2,7 +2,7 @@
   <div style="height: 100vh; background-color: rgb(34, 53, 53);">
     <div class="q-ml-sm">
 
-      <div v-if="userCards">
+      <div v-if="userCards.length > 0">
         <span class="text-h6" style="color: antiquewhite;">🔮선택하신 카드</span>
         <div class="card-base">
           <div class="my-card" v-for="(userCard, index) in userCards" :key=userCard :id=userCard :style="{ left: index*30 + 'px' }">
@@ -43,6 +43,7 @@ export default {
     const selectedAmount = ref(0)
     const cards = ref([])
     const selectedCards = ref(new Map)
+    const userCards = ref([])
 
     const shuffleArrayES6 = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -65,11 +66,30 @@ export default {
       }
     }
 
+    const submit = () => {
+      if (selectedCards.value.size < selectedAmount.value) {
+        alert(`총 ${selectedAmount.value}장의 카드를 선택해 주세요`)
+        return false
+      }
+
+      const params = {
+        reservationIdx: reservationIdx.value,
+        cards: [...selectedCards.value.values()]
+      }
+      axios.post('/api/fortune-telling/pick-cards', params).then(() => {
+        userCards.value = [...selectedCards.value.values()]
+        cards.value = cards.value.filter(o => !userCards.value.includes(o.toString()))
+        alert('카드 선택이 완료 됐습니다.😎')
+        window.scrollTo(0, 0)
+      })
+    }
+
     onMounted(async () => {
       const detail = await axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`)
       cardsAmount.value = detail.data.reservation.amountCards
       selectedAmount.value = detail.data.reservation.selectedCards
-      cards.value = shuffleArrayES6([...new Array(cardsAmount.value).keys()])
+      cards.value = shuffleArrayES6([...new Array(cardsAmount.value).keys()]).filter(o => !detail.data.cards.includes(o.toString()))
+      userCards.value = detail.data.cards
     });
 
     return {
@@ -77,30 +97,10 @@ export default {
       selectedAmount,
       reservationIdx,
       selectedCards,
-      selectCard
-    }
-  },
-  data () {
-    return {
-      userCards: null
-    }
-  },
-  methods: {
-    submit () {
-      if (this.selectedCards.size < this.selectedAmount) {
-        alert(`총 ${this.selectedAmount}장의 카드를 선택해 주세요`)
-        return false
-      }
+      userCards,
 
-      const params = {
-        reservationIdx: this.reservationIdx,
-        cards: [...this.selectedCards.values()]
-      }
-      this.$http.post('/api/fortune-telling/pick-cards', params).then(() => {
-        this.userCards = [...this.selectedCards.values()]
-        alert('카드 선택이 완료 됐습니다.😎')
-        window.scrollTo(0, 0);
-      })
+      selectCard,
+      submit
     }
   }
 }
