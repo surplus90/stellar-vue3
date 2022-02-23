@@ -62,6 +62,8 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 import moment from 'moment'
 
 export default {
@@ -69,10 +71,28 @@ export default {
   props: {
   },
   setup () {
+    const router = useRouter()
     const userName = ref(null)
     const amountOfCards = ref(0)
     const selectedCards = ref(0)
     const reservationAt = ref(moment().format('YYYY-MM-DD HH:mm'))
+
+    const onSubmit = () => {
+      if (selectedCards.value > amountOfCards.value) {
+        alert('총 카드 장수보다 많이 선택 할 수 없어요.')
+        return false
+      }
+
+      const params = {
+          userName: userName.value,
+          amountOfCards: Number(amountOfCards.value),
+          selectedCards: Number(selectedCards.value),
+          reservationAt: reservationAt.value
+      }
+      axios.post('/api/fortune-telling/setting', params).then(() => {
+        router.push('/reservations')
+      })
+    }
 
     return {
       userName,
@@ -88,6 +108,7 @@ export default {
         firstDayOfWeek: 1
       },
       
+      onSubmit,
       onReset () {
         userName.value = null
         amountOfCards.value = 0
@@ -95,25 +116,7 @@ export default {
         reservationAt.value = null
       }
     }
-  },
-  methods: {
-      onSubmit () {
-        if (this.selectedCards > this.amountOfCards) {
-          alert('총 카드 장수보다 많이 선택 할 수 없어요.')
-          return false
-        }
-
-        const params = {
-            userName: this.userName,
-            amountOfCards: Number(this.amountOfCards),
-            selectedCards: Number(this.selectedCards),
-            reservationAt: this.reservationAt
-        }
-        this.$http.post('/api/fortune-telling/setting', params).then(() => {
-          this.$router.push('/reservations')
-        })
-      }
-  },
+  }
 }
 </script>
 
