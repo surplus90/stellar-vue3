@@ -12,6 +12,11 @@ const routes = [
         component: () => import('@/views/Reservations')
     },
     {
+        path: '/reservation/:idx',
+        name: 'ReservationDetail',
+        component: () => import('@/views/ReservationDetail')
+    },
+    {
         path: '/set/cards',
         name: 'SetCards',
         component: () => import('@/views/SetCards')

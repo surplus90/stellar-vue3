@@ -10,49 +10,25 @@
       row-key="idx"
     >
 
+      <template v-slot:body-cell-userName="props">
+        <q-td :props="props" @click="goDetail(props.key)">
+          {{ props.value }}
+        </q-td>
+      </template>
       <template v-slot:body-cell-userLink="props">
         <q-td :props="props">
           {{ `${this.location}/cards/${props.value}` }}
           <!-- <q-btn flat round color="black" icon="content_copy" size="sm" @click="copyLink(props.value)" /> -->
         </q-td>
       </template>
-      <template v-slot:body-cell-setcardsAt="props">
-        <q-td :props="props">
-          {{ props.value }}
-          <q-btn round color="purple" glossy icon="style" size="10px" v-if="props.value" @click="showCards(props.row)" /> 
-        </q-td>
-      </template>
-
     </q-table>
-
-    <q-dialog v-model="alert" full-width>
-      <q-card style="padding-bottom: 20px">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">{{ detail.userName }}</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-
-        <q-card-section>
-          <q-card
-            v-for="(card, num) in this.detail.cards" :key="num" 
-            class="my-card text-white"
-            style="background: radial-gradient(circle, #5a3b54 0%, #403a48 100%)"
-          >
-            <q-card-section>
-              <div class="text-h6">{{card}}</div>
-            </q-card-section>
-          </q-card>
-        </q-card-section>
-
-      </q-card>
-    </q-dialog>
 
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -61,6 +37,7 @@ export default {
   props: {
   },
   setup () {
+    const router = useRouter()
     const location = ref(window.location.origin)
     const columns = ref([])
     const rows = ref([])
@@ -85,7 +62,12 @@ export default {
       columns,
       rows,
 
-      alert: ref(false)
+      goDetail: (idx) => {
+        router.push(`/reservation/${idx}`)
+      },
+      goSetCard: () => {
+        router.push('/set/cards')
+      }
     }
   },
   data() {
@@ -96,17 +78,6 @@ export default {
   methods: {
     copyLink (idx) {
       navigator.clipboard.writeText(`${this.location}/cards/${idx}`)
-    },
-    goSetCard () {
-      this.$router.push('/set/cards')
-    },
-    showCards (data) {
-      this.detail = data
-      this.$http.get(`/api/fortune-telling/show-cards/${data.idx}`).then(res => {
-        Object.assign(this.detail, { cards : res.data })
-      }).then(() => {
-        this.alert = true
-      })
     }
   },
 }
