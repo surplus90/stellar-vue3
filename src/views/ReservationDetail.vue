@@ -36,9 +36,16 @@
         <div v-if="cards.length > 0" class="q-mt-md">
             <span class="text-h6" style="color: antiquewhite;">🔮선택하신 카드</span>
             <div class="card-base">
-                <div class="my-card" v-for="card in cards" :key=card :id=card>
-                    {{card}}
-                </div>
+
+                <q-card-section horizontal v-for="card in cards" :key=card :id=card>
+                    <q-img
+                        class="col-2"
+                        :src="require(`@/assets` + card.imgPath)"
+                    />
+                    <q-card-section>
+                        {{ card.cardName }}
+                    </q-card-section>
+                </q-card-section>
             </div>
         </div>
     </div>
@@ -63,7 +70,15 @@ export default {
         onMounted(() => {
             axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`).then((res) => {
                 detail.value = res.data.reservation
-                cards.value = res.data.cards
+                cards.value = res.data.cards.map((card, index) => {
+                    let cardInfo = res.data.cardsInfo.find(o => o.seq === card)
+                    return {
+                        seq: index,
+                        cardNo: card,
+                        cardName: cardInfo.cardName,
+                        imgPath: cardInfo.imgPath
+                    }
+                })
             })
         });
         
@@ -81,12 +96,5 @@ export default {
 </script>
 
 <style scoped>
-    .my-card {
-        width: 70px;
-        height: 100px;
-        background: #eeeae7;
-        border-radius: 8px;
-        box-shadow: 0 1px 2px 0 rgba(151,150,146,0.4);
-    }
 </style>
   
