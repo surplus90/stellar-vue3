@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <h1>스텔라 타로</h1>
-    <img src="@/assets/logo.png"/>
+  <div class="text-center stars">
+    <div class="fixed-center">
+      <span class="text-overline title">Stella✨</span>
+    </div>
   </div>
 </template>
 
@@ -14,5 +15,14 @@ export default {
 </script>
 
 <style scoped>
-
+  .title {
+    font-size: xx-large;
+    color:lightcyan;
+  }
+  .stars {
+    width: 100vw;
+    height: 100vh;
+    background: url(../assets/stars.png) repeat top center;
+    z-index: 0;
+  }
 </style>

@@ -11,7 +11,7 @@
     >
 
       <template v-slot:body-cell-userName="props">
-        <q-td :props="props" @click="goDetail(props.key)">
+        <q-td :props="props" class="on-click" @click="goDetail(props.key)">
           {{ props.value }}
         </q-td>
       </template>
@@ -92,5 +92,9 @@ export default {
   height: 100px;
   text-align: center;
   float: left;
+}
+.on-click {
+  cursor:pointer;
+  color: darkorchid;
 }
 </style>
