@@ -34,7 +34,7 @@
         <q-separator class="q-mt-md" />
 
         <div v-if="cards.length > 0" class="q-mt-md">
-            <span class="text-h6" style="color: antiquewhite;">🔮선택하신 카드</span>
+            <span class="text-h6 card-description">🔮선택하신 카드</span>
             <div class="card-base">
 
                 <q-card-section horizontal v-for="card in cards" :key=card :id=card>
@@ -43,7 +43,7 @@
                         :src="require(`@/assets` + card.imgPath)"
                     />
                     <q-card-section>
-                        {{ card.cardName }}
+                        <span class="text-overline card-description">{{ card.cardName }}</span>
                     </q-card-section>
                 </q-card-section>
             </div>
@@ -96,5 +96,8 @@ export default {
 </script>
 
 <style scoped>
+    .card-description {
+        color: antiquewhite;
+    }
 </style>
   
