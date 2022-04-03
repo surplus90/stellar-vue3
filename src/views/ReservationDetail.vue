@@ -36,17 +36,25 @@
         <div v-if="cards.length > 0" class="q-mt-md">
             <span class="text-h6 card-description">🔮선택하신 카드</span>
             <div class="card-base">
-
                 <q-card-section horizontal v-for="card in cards" :key=card :id=card>
                     <q-img
                         class="col-2"
                         :src="require(`@/assets` + card.imgPath)"
+                        style="width: 120px; max-width: 120px;"
                     />
                     <q-card-section>
                         <span class="text-overline card-description">{{ card.cardName }}</span>
                     </q-card-section>
                 </q-card-section>
             </div>
+        </div>
+
+        <div v-if="cards.length > 0">
+            <div class="text-h6 card-description q-mt-lg">🪄카드를 더 뽑아주세요</div>
+            <div class="float-left q-gutter-md" style="max-width: 200px">
+                <q-input bg-color="white" filled  v-model.number="requestCard" type="number" label="뽑을 카드 장 수" />
+            </div>
+            <q-btn class="q-mt-md q-ml-sm" color="brown-5" label="요청" @click="setMoreCards" />
         </div>
     </div>
 </template>
@@ -66,6 +74,7 @@ export default {
         const reservationIdx = ref(Number(route.params.idx))
         const detail = ref({})
         const cards = ref([])
+        const requestCard = ref(0)
 
         onMounted(() => {
             axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`).then((res) => {
@@ -86,9 +95,16 @@ export default {
             reservationIdx,
             detail,
             cards,
+            requestCard,
 
             goList: () => {
                 router.push('/reservations')
+            },
+            setMoreCards: () => {
+                axios.put(`/api/fortune-telling/setting/${reservationIdx.value}/cards/${requestCard.value}`).then(() => {
+                    alert('카드 추가 요청을 완료했습니다.')
+                    router.go()
+                })
             }
         }
     }

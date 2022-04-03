@@ -1,25 +1,30 @@
 <template>
-  <div style="height: 100vh; background-color: rgb(34, 53, 53);">
+  <div>
     <div class="q-ml-sm">
 
       <div v-if="userCards.length > 0">
         <span class="text-h6" style="color: antiquewhite;">🔮선택하신 카드</span>
         <div class="card-base">
-          <div class="my-card" v-for="(userCard, index) in userCards" :key=userCard :id=userCard :style="{ left: index*30 + 'px' }">
-            {{userCard}}
-          </div>
-        </div>
+          <q-card-section horizontal v-for="userCard in userCards" :key=userCard :id=userCard>
+              <q-img
+                  class="col-2"
+                  :src="require(`@/assets` + userCard.imgPath)"
+                  style="width: 100px; max-width: 120px;"
+              />
+              <q-card-section>
+                  <span class="text-overline card-description">{{ userCard.cardName }}</span>
+              </q-card-section>
+          </q-card-section>
+      </div>
       </div>
 
       <span class="text-h6" style="color: antiquewhite;">🔮{{ selectedAmount }}장의 카드를 선택해 주세요.</span>
     
       <div class="row">
-        <div class="my-card float-left" v-for="card in cards" :key=card :id=card @click="selectCard(card)">
-          {{card}}
-        </div>
+        <div class="my-card float-left" v-for="card in cards" :key=card :id=card @click="selectCard(card)"></div>
       </div>
       
-      <div class="row q-mt-md">
+      <div class="row q-mt-md" v-if="selectedAmount > 0">
         <q-btn color="grey-4" text-color="purple" glossy unelevated label="카드 선택 완료" @click="submit"/>
       </div>
 
@@ -29,7 +34,7 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 
 export default {
@@ -38,6 +43,7 @@ export default {
   },
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const reservationIdx = ref(Number(route.params.idx))
     const cardsAmount = ref(0)
     const selectedAmount = ref(0)
@@ -77,19 +83,25 @@ export default {
         cards: [...selectedCards.value.values()]
       }
       axios.post('/api/fortune-telling/pick-cards', params).then(() => {
-        userCards.value = [...selectedCards.value.values()]
-        cards.value = cards.value.filter(o => !userCards.value.includes(o.toString()))
         alert('카드 선택이 완료 됐습니다.😎')
-        window.scrollTo(0, 0)
+        router.go()
       })
     }
 
     onMounted(async () => {
       const detail = await axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`)
       cardsAmount.value = detail.data.reservation.amountCards
-      selectedAmount.value = detail.data.reservation.selectedCards
       cards.value = shuffleArrayES6([...new Array(cardsAmount.value).keys()]).filter(o => !detail.data.cards.includes(o.toString()))
-      userCards.value = detail.data.cards
+      userCards.value = detail.data.cards.map((card, index) => {
+                    let cardInfo = detail.data.cardsInfo.find(o => o.seq === card)
+                    return {
+                        seq: index,
+                        cardNo: card,
+                        cardName: cardInfo.cardName,
+                        imgPath: cardInfo.imgPath
+                    }
+                })
+      selectedAmount.value = detail.data.reservation.selectedCards - userCards.value.length
     });
 
     return {
