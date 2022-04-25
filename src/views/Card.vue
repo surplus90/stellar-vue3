@@ -120,12 +120,16 @@ export default {
 
 <style scoped>
 
-.my-card {
-  width: 70px;
-  height: 100px;
-  background: #eeeae7;
-  border-radius: 8px;
-  box-shadow: 0 1px 2px 0 rgba(151,150,146,0.4);
-}
+  .my-card {
+    width: 70px;
+    height: 100px;
+    background: #eeeae7;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(151,150,146,0.4);
+  }
+
+  .card-description {
+        color: antiquewhite;
+    }
 
 </style>

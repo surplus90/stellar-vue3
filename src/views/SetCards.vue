@@ -8,6 +8,8 @@
     >
       <q-input
         filled
+        dark
+        color="lime-11"
         v-model="userName"
         label="고객명"
         hint="고객명을 입력해주세요."
@@ -15,18 +17,20 @@
         :rules="[ val => val && val.length > 0 || '고객명을 입력해주세요.' ]"
       />
 
-      <q-input
-        filled
-        type="number"
-        v-model="amountOfCards"
-        label="총 카드 장 수"
-        hint="총 카드 장수를 입력해주세요."
-        lazy-rules
-        :rules="[ val => val !== null && val !== '' && val > 0 || '총 카드 장 수를 입력해주세요.' ]"
+      <q-select 
+        filled 
+        color="lime-11" 
+        dark 
+        v-model="selectedDeck" 
+        :options="deckOptions" 
+        label="덱 선택"
+        :rules="[ val => val !== null || '덱을 선택해주세요.' ]"
       />
 
       <q-input
         filled
+        dark
+        color="lime-11"
         type="number"
         v-model="selectedCards"
         label="선택할 카드 장 수"
@@ -35,7 +39,7 @@
         :rules="[ val => val !== null && val !== '' && val > 0 || '선택할 카드 장 수를 입력해주세요.']"
       />
 
-      <q-input filled v-model="reservationAt" label="예약날짜" :rules="[ val => val && val.length > 0 || '예약 시간을 선택해주세요.' ]">
+      <q-input filled dark color="lime-11" v-model="reservationAt" label="예약날짜" :rules="[ val => val && val.length > 0 || '예약 시간을 선택해주세요.' ]">
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
@@ -61,7 +65,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import moment from 'moment'
@@ -73,22 +77,33 @@ export default {
   setup () {
     const router = useRouter()
     const userName = ref(null)
-    const amountOfCards = ref(0)
+    const selectedDeck = ref(null)
     const selectedCards = ref(0)
     const reservationAt = ref(moment().format('YYYY-MM-DD HH:mm'))
+    const deckOptions = ref([])
+
+    onMounted(() => {
+        axios.get(`/api/fortune-telling/decks`).then((res) => {
+          deckOptions.value = res.data.map(o => { return { label: o.deckName, value: o.idx, amountCards: o.amountCards } })
+        })
+    });
 
     const onSubmit = () => {
-      if (selectedCards.value > amountOfCards.value) {
+      if (selectedCards.value > selectedDeck.value.amountCards) {
         alert('총 카드 장수보다 많이 선택 할 수 없어요.')
         return false
       }
 
+      console.log(selectedDeck.value)
+
       const params = {
           userName: userName.value,
-          amountOfCards: Number(amountOfCards.value),
+          deckIdx: selectedDeck.value.value,
+          amountOfCards: selectedDeck.value.amountCards,
           selectedCards: Number(selectedCards.value),
           reservationAt: reservationAt.value
       }
+      console.log(params)
       axios.post('/api/fortune-telling/setting', params).then(() => {
         router.push('/reservations')
       })
@@ -96,9 +111,10 @@ export default {
 
     return {
       userName,
-      amountOfCards,
+      selectedDeck,
       selectedCards,
       reservationAt,
+      deckOptions,
       myLocale: {
         /* starting with Sunday */
         days: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
@@ -111,7 +127,7 @@ export default {
       onSubmit,
       onReset () {
         userName.value = null
-        amountOfCards.value = 0
+        selectedDeck.value = null
         selectedCards.value = 0
         reservationAt.value = null
       }

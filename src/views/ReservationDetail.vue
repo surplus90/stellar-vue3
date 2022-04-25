@@ -11,6 +11,10 @@
                 <td class="text-left">{{ detail.userName }}</td>
             </tr>
             <tr>
+                <td class="text-left">타로 덱</td>
+                <td class="text-left">{{ detail.deckName }}</td>
+            </tr>
+            <tr>
                 <td class="text-left">총 카드 장 수</td>
                 <td class="text-left">{{ detail.amountCards }}</td>
             </tr>
@@ -35,15 +39,15 @@
 
         <div v-if="cards.length > 0" class="q-mt-md">
             <span class="text-h6 card-description">🔮선택하신 카드</span>
-            <div class="card-base">
-                <q-card-section horizontal v-for="card in cards" :key=card :id=card>
+            <div class="row items-start">
+                <q-card-section v-for="(card, index) in cards" :key="card.idx" :id="card.idx">
                     <q-img
                         class="col-2"
                         :src="require(`@/assets` + card.imgPath)"
                         style="width: 120px; max-width: 120px;"
                     />
                     <q-card-section>
-                        <span class="text-overline card-description">{{ card.cardName }}</span>
+                        <span class="text-overline card-description">[{{++index}}] {{ card.cardName }}</span>
                     </q-card-section>
                 </q-card-section>
             </div>
