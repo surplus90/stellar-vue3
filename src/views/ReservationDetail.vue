@@ -39,7 +39,7 @@
 
         <div v-if="cards.length > 0" class="q-mt-md">
             <span class="text-h6 card-description">🔮선택하신 카드</span>
-            <div class="row items-start">
+            <!-- <div class="row items-start">
                 <q-card-section v-for="(card, index) in cards" :key="card.idx" :id="card.idx">
                     <q-img
                         class="col-2"
@@ -50,6 +50,23 @@
                         <span class="text-overline card-description">[{{++index}}] {{ card.cardName }}</span>
                     </q-card-section>
                 </q-card-section>
+            </div> -->
+
+            <div class="q-pa-md">
+                <q-scroll-area :style="{ height: '310px', maxWidth: 155*cards.length + 'px' }">
+                    <div class="row no-wrap">
+                        <q-card-section v-for="(card, index) in cards" :key="card.idx" :id="card.idx">
+                            <q-img
+                                class="col-2"
+                                :src="require(`@/assets` + card.imgPath)"
+                                style="width: 120px; max-width: 120px;"
+                            />
+                            <q-card-section>
+                                <span class="text-overline card-description">[{{++index}}] {{ card.cardName }}</span>
+                            </q-card-section>
+                        </q-card-section>
+                    </div>
+                </q-scroll-area>
             </div>
         </div>
 
