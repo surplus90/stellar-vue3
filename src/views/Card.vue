@@ -91,7 +91,7 @@ export default {
     onMounted(async () => {
       const detail = await axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`)
       cardsAmount.value = detail.data.reservation.amountCards
-      cards.value = shuffleArrayES6([...new Array(cardsAmount.value).keys()]).filter(o => !detail.data.cards.includes(o.toString()))
+      cards.value = shuffleArrayES6([...new Array(cardsAmount.value).keys()]).filter(o => !detail.data.cards.includes(o))
       userCards.value = detail.data.cards.map((card, index) => {
                     let cardInfo = detail.data.cardsInfo.find(o => o.seq === card)
                     return {
