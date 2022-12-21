@@ -39,7 +39,9 @@
 
         <div v-if="cards.length > 0" class="q-mt-md">
             <span class="text-h6 card-description">🔮선택하신 카드</span>
-            <div class="row items-start">
+
+            <!-- 기본 배열법 -->
+            <div v-if="detail.wayToArray === 0" class="row items-start">
                 <q-card-section v-for="(card, index) in cards" :key="card.idx" :id="card.idx" style="padding: 2px">
                     <q-img
                         class="col-2"
@@ -52,22 +54,153 @@
                 </q-card-section>
             </div>
 
-            <!-- <div class="q-pa-md">
-                <q-scroll-area :style="{ height: '310px', maxWidth: 155*cards.length + 'px' }">
-                    <div class="row no-wrap">
-                        <q-card-section v-for="(card, index) in cards" :key="card.idx" :id="card.idx">
+            <!-- 신년운세 배열법 -->
+            <div v-if="detail.wayToArray === 1" class="q-pa-md doc-container">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
                             <q-img
-                                class="col-2"
-                                :src="require(`@/assets` + card.imgPath)"
-                                style="width: 120px; max-width: 120px;"
+                                :src="require(`@/assets` + cards[9].imgPath)"
+                                style="width: 110px; max-width: 110px;"
                             />
-                            <q-card-section>
-                                <span class="text-overline card-description">[{{++index}}] {{ card.cardName }}</span>
-                            </q-card-section>
-                        </q-card-section>
-                    </div>
-                </q-scroll-area>
-            </div> -->
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[10].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[8].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[11].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[7].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[0].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[12].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[6].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[1].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[5].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[2].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[4].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <q-img
+                                :src="require(`@/assets` + cards[3].imgPath)"
+                                style="width: 110px; max-width: 110px;"
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div v-if="cards.length > 12">
+                <q-card-section v-for="(card, index) in cards" :key="card.idx" :id="card.idx" style="padding: 2px">
+                    <q-img
+                        v-if="index > 12"
+                        class="col-2"
+                        :src="require(`@/assets` + card.imgPath)"
+                        style="width: 110px; max-width: 110px;"
+                    />
+                    <q-card-section v-if="index > 12" style="padding: 5px">
+                        <span class="text-overline card-description">[{{++index}}] {{ card.cardName }}</span>
+                    </q-card-section>
+                </q-card-section>
+            </div>
         </div>
 
         <div v-if="cards.length > 0">
@@ -137,4 +270,3 @@ export default {
         color: antiquewhite;
     }
 </style>
-  
