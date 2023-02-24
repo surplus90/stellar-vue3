@@ -84,17 +84,17 @@ export default {
 </script>
 
 <style scoped>
-.btn {
-  margin-bottom: 15px;
-}
-.my-card {
-  width: 70px;
-  height: 100px;
-  text-align: center;
-  float: left;
-}
-.on-click {
-  cursor:pointer;
-  color: darkorchid;
-}
+  .btn {
+    margin-bottom: 15px;
+  }
+  .my-card {
+    width: 70px;
+    height: 100px;
+    text-align: center;
+    float: left;
+  }
+  .on-click {
+    cursor:pointer;
+    color: darkorchid;
+  }
 </style>
