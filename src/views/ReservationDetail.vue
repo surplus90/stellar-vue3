@@ -265,6 +265,11 @@ export default {
 }
 </script>
 
+<style>
+    body {
+        height: 100vh;
+    }
+</style>
 <style scoped>
     .card-description {
         color: antiquewhite;

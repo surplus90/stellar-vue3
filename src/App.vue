@@ -12,7 +12,7 @@ export default {
 
 <style>
   body {
-    height: auto;
+    height: 100%;
     background: linear-gradient(#29345A, #151821);
     background-repeat : no-repeat;
     background-size : cover;

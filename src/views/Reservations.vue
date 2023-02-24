@@ -83,6 +83,11 @@ export default {
 }
 </script>
 
+<style>
+  body {
+    height: 100vh;
+  }
+</style>
 <style scoped>
   .btn {
     margin-bottom: 15px;

@@ -153,6 +153,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  body {
+    height: 100vh;
+  }
 </style>
