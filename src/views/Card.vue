@@ -198,6 +198,18 @@ export default {
   .card-flipped-3 {
     background: url('../assets/pick_symbolon.svg') no-repeat 100%;
   }
+  .card-unflipped-5 {
+    background: url('../assets/deck_wheeloftime.svg') no-repeat 100%;
+  }
+  .card-flipped-5 {
+    background: url('../assets/pick_wheeloftime.svg') no-repeat 100%;
+  }
+  .card-unflipped-6 {
+    background: url('../assets/deck_lenormand.svg') no-repeat 100%;
+  }
+  .card-flipped-6 {
+    background: url('../assets/pick_lenormand.svg') no-repeat 100%;
+  }
   .btn-submit {
     width: 100%;
     height: 48px;
