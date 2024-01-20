@@ -47,7 +47,7 @@ export default {
       { name: 'userName', align: 'center', label: '상담명', field: 'userName' },
       { name: 'amountCards', align: 'center', label: '총 카드 장 수', field: 'amountCards' },
       { name: 'selectedCards', align: 'center', label: '선택해야 할 카드 장 수', field: 'selectedCards' },
-      { name: 'userLink', align: 'center', label: 'link', field: 'idx' },
+      { name: 'userLink', align: 'center', label: 'link', field: row => (row.encKey)? `0?key=${row.encKey}` : `${row.idx}` },
       { name: 'reservationAt', align: 'center', label: '예약날짜', field: 'reservationAt', format: val => moment(val).format('YYYY-MM-DD hh:mm:s') },
       { name: 'setcardsAt', align: 'center', label: '카드선택', field: 'setcardsAt', format: val => (val) ? moment(val).format('YYYY-MM-DD hh:mm:s') : '' },
       { name: 'createdAt', align: 'center', label: '생성날짜', field: 'createdAt', format: val => moment(val).format('YYYY-MM-DD hh:mm:s') }

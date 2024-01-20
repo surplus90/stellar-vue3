@@ -51,6 +51,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const reservationIdx = ref(Number(route.params.idx))
+    const encKey = ref(route.query.key)
     const deckIdx = ref(0)
     const cardsAmount = ref(0)
     const selectedAmount = ref(0)
@@ -98,7 +99,8 @@ export default {
     }
 
     onMounted(async () => {
-      const detail = await axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}`)
+      const detail = await axios.get(`/api/fortune-telling/reservations/${reservationIdx.value}?encKey=${encKey.value}`)
+      reservationIdx.value = detail.data.reservation.idx
       deckIdx.value = detail.data.reservation.deckIdx
       cardsAmount.value = detail.data.reservation.amountCards
       cards.value = shuffleArrayES6([...new Array(cardsAmount.value).keys()]).filter(o => !detail.data.cards.includes(o))
