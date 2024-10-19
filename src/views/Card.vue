@@ -212,6 +212,12 @@ export default {
   .card-flipped-6 {
     background: url('../assets/pick_lenormand.svg') no-repeat 100%;
   }
+  .card-unflipped-7 {
+    background: url('../assets/deck_jy.svg') no-repeat 100%;
+  }
+  .card-flipped-7 {
+    background: url('../assets/pick_jy.svg') no-repeat 100%;
+  }
   .btn-submit {
     width: 100%;
     height: 48px;
